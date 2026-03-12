@@ -3,3 +3,4 @@ tmux/plugins/
 
 *.backup
 machine_type
+sesh/scripts/scripts
