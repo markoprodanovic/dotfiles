@@ -1,0 +1,14 @@
+# Sesh session configuration
+# Each [[session]] entry appears in the sesh picker.
+# startup_script runs after the session is created — use it to set up splits/windows.
+
+[[session]]
+name = "vek-moderne-arhitekture"
+path = "~/Documents/Dev/vek-moderne-arhitekture"
+startup_command = "bash ~/.config/sesh/scripts/vek-moderne-arhitekture.sh"
+
+# Template for adding more sessions:
+# [[session]]
+# name = "my-project"
+# path = "~/projects/my-project"
+# startup_command = "bash ~/.config/sesh/scripts/my-project.sh"
