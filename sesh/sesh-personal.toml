@@ -22,3 +22,15 @@ startup_command = "ls"
 name = "vek-moderne-arhitekture"
 path = "~/Documents/Dev/vek-moderne-arhitekture"
 startup_command = "bash ~/.config/sesh/scripts/vek-moderne-arhitekture.sh"
+
+[[session]]
+name = "morpheus"
+path = "~"
+startup_command = "ssh marko@morpheus"
+
+[[session]]
+name = "media-server"
+path = "~"
+startup_command = "ssh admin@marko-server.local"
+
+
