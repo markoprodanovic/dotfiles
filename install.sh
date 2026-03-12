@@ -43,11 +43,3 @@ ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 # Install tmux plugins
 echo "Installing tmux plugins..."
 ~/.tmux/plugins/tpm/bin/install_plugins
-
-# Add tmux auto-attach to .zshrc if not already present
-if ! grep -q "tmux new-session -A" ~/.zshrc; then
-    echo '\n# Auto-attach to tmux on terminal open\nif [[ -z "$TMUX" ]]; then\n  tmux new-session -A\nfi' >> ~/.zshrc
-    echo "Added tmux auto-attach to .zshrc"
-else
-    echo "tmux auto-attach already in .zshrc"
-fi
