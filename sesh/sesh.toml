@@ -1,6 +1,24 @@
+#
+# ███████╗███████╗███████╗██╗  ██╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗ 
+# ██╔════╝██╔════╝██╔════╝██║  ██║    ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝ 
+# ███████╗█████╗  ███████╗███████║    ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+# ╚════██║██╔══╝  ╚════██║██╔══██║    ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+# ███████║███████╗███████║██║  ██║    ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+# ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ 
+#
+
 # Sesh session configuration
 # Each [[session]] entry appears in the sesh picker.
-# startup_script runs after the session is created — use it to set up splits/windows.
+# startup_command runs a command when a new session is created (ignored if session already exists).
+
+[[session]]
+name = "home"
+path = "~"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "ls"
 
 [[session]]
 name = "vek-moderne-arhitekture"
