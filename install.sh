@@ -33,11 +33,20 @@ else
     echo "TPM already installed"
 fi
 
+# Determine machine type for sesh config
+if [ ! -f "$DOTFILES_DIR/machine_type" ]; then
+    echo "Is this a work or personal machine? (work/personal)"
+    read -r MACHINE_TYPE
+    echo "$MACHINE_TYPE" > "$DOTFILES_DIR/machine_type"
+else
+    MACHINE_TYPE=$(cat "$DOTFILES_DIR/machine_type")
+fi
+
 # Create symbolic links
 ln -sf "$DOTFILES_DIR/ghostty/config" ~/Library/Application\ Support/com.mitchellh.ghostty/config
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" ~/.tmux.conf
 ln -sf "$DOTFILES_DIR/starship/starship.toml" ~/.config/starship.toml
-ln -sf "$DOTFILES_DIR/sesh/sesh.toml" ~/.config/sesh/sesh.toml
+ln -sf "$DOTFILES_DIR/sesh/sesh-${MACHINE_TYPE}.toml" ~/.config/sesh/sesh.toml
 ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 
 # Install tmux plugins

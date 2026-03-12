@@ -7,9 +7,7 @@
 # ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ 
 #
 
-# Sesh session configuration
-# Each [[session]] entry appears in the sesh picker.
-# startup_command runs a command when a new session is created (ignored if session already exists).
+# Work machine sessions
 
 [[session]]
 name = "home"
@@ -19,11 +17,6 @@ path = "~"
 name = "dotfiles"
 path = "~/dotfiles"
 startup_command = "ls"
-
-[[session]]
-name = "vek-moderne-arhitekture"
-path = "~/Documents/Dev/vek-moderne-arhitekture"
-startup_command = "bash ~/.config/sesh/scripts/vek-moderne-arhitekture.sh"
 
 [[session]]
 name = "magento-cloud"
@@ -39,9 +32,3 @@ startup_command = "magento-nodes"
 name = "magento-main"
 path = "/Users/marko.prodanovic/Sites/ax-magento"
 startup_command = "bash ~/.config/sesh/scripts/magento-main.sh"
-
-# Template for adding more sessions:
-# [[session]]
-# name = "my-project"
-# path = "~/projects/my-project"
-# startup_command = "bash ~/.config/sesh/scripts/my-project.sh"

@@ -12,8 +12,21 @@ Personal config files for:
 - Ghostty terminal
 - tmux
 - Starship prompt
+- Sesh session manager
 
 ## Installation
 
-Clone the repo and run the install script
-`./install.sh`
+Clone the repo and run the install script:
+```bash
+./install.sh
+```
+
+You'll be prompted to identify if this is a work or personal machine. This determines which sesh sessions are available (stored in `machine_type`).
+
+## Machine-Specific Sessions
+
+Sesh sessions are configured per machine type:
+- `sesh-work.toml` - Work laptop sessions (magento-main, magento-cloud, etc.)
+- `sesh-personal.toml` - Personal laptop sessions (vek-moderne-arhitekture, etc.)
+
+To change machine type, edit `machine_type` and run `./install.sh` again.
