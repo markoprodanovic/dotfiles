@@ -16,7 +16,7 @@ path = "~"
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
-startup_command = "ls"
+startup_command = "nvim ."
 
 [[session]]
 name = "magento-cloud"
@@ -32,3 +32,8 @@ startup_command = "magento-nodes"
 name = "magento-main"
 path = "/Users/marko.prodanovic/Sites/ax-magento"
 startup_command = "bash ~/.config/sesh/scripts/magento-main.sh"
+
+[[session]]
+name = "nvim config"
+path = "~/.config/nvim"
+startup_command = "nvim ."
