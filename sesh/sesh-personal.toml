@@ -24,6 +24,11 @@ path = "~/Documents/Dev/vek-moderne-arhitekture"
 startup_command = "bash ~/.config/sesh/scripts/vek-moderne-arhitekture.sh"
 
 [[session]]
+name = "op-tracker-frontend"
+path = "~/Documents/Dev/op-tracker-frontend"
+startup_command = "bash ~/.config/sesh/scripts/op-tracker-frontend.sh"
+
+[[session]]
 name = "morpheus"
 path = "~"
 startup_command = "ssh marko@morpheus"
