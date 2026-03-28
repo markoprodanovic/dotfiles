@@ -47,6 +47,8 @@ ln -sf "$DOTFILES_DIR/ghostty/config" ~/Library/Application\ Support/com.mitchel
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" ~/.tmux.conf
 ln -sf "$DOTFILES_DIR/starship/starship.toml" ~/.config/starship.toml
 ln -sf "$DOTFILES_DIR/sesh/sesh-${MACHINE_TYPE}.toml" ~/.config/sesh/sesh.toml
+rm -rf ~/.config/nvim
+ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
 rm -rf ~/.config/sesh/scripts
 ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 
