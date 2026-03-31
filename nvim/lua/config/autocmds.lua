@@ -10,3 +10,14 @@
 vim.api.nvim_create_autocmd("VimLeave", {
   command = "set guicursor=a:ver25-blinkon1",
 })
+
+-- Muted diff highlights (Bearded arc-blueberry sets these too saturated)
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "DiffAdd",    { bg = "#1a3a1a", fg = "NONE" })
+    vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#3a1a1a", fg = "NONE" })
+    vim.api.nvim_set_hl(0, "DiffChange", { bg = "#1a2a3a", fg = "NONE" })
+    vim.api.nvim_set_hl(0, "DiffText",   { bg = "#2a4a6a", fg = "NONE", bold = true })
+  end,
+})
