@@ -47,8 +47,20 @@ ln -sf "$DOTFILES_DIR/ghostty/config" ~/Library/Application\ Support/com.mitchel
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" ~/.tmux.conf
 ln -sf "$DOTFILES_DIR/starship/starship.toml" ~/.config/starship.toml
 ln -sf "$DOTFILES_DIR/sesh/sesh-${MACHINE_TYPE}.toml" ~/.config/sesh/sesh.toml
-rm -rf ~/.config/nvim
-ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
+if [ -e ~/.config/nvim ] && [ "$(readlink ~/.config/nvim)" != "$DOTFILES_DIR/nvim" ]; then
+    echo "Existing Neovim config detected at ~/.config/nvim"
+    read -r -p "Replace it with dotfiles config? (y/n) " REPLACE_NVIM
+    if [ "$REPLACE_NVIM" = "y" ]; then
+        rm -rf ~/.config/nvim
+        ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
+    else
+        echo "Skipping Neovim config"
+    fi
+elif [ ! -e ~/.config/nvim ]; then
+    ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
+else
+    echo "Neovim config already linked"
+fi
 rm -rf ~/.config/sesh/scripts
 ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 
