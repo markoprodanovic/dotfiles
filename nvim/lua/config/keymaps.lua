@@ -4,14 +4,6 @@
 
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" })
 
-vim.keymap.set("n", "<leader>gd", function()
-  if next(require("diffview.lib").views) == nil then
-    vim.cmd("DiffviewOpen")
-  else
-    vim.cmd("DiffviewClose")
-  end
-end, { desc = "Toggle Diffview" })
-
 vim.keymap.set("n", "<leader>gv", function()
   if next(require("diffview.lib").views) == nil then
     vim.cmd("DiffviewOpen")
@@ -19,3 +11,4 @@ vim.keymap.set("n", "<leader>gv", function()
     vim.cmd("DiffviewClose")
   end
 end, { desc = "Toggle Diffview" })
+
