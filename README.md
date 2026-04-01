@@ -13,6 +13,7 @@ Personal config files for:
 - tmux
 - Starship prompt
 - Sesh session manager
+- Neovim | [LazyVim](https://www.lazyvim.org/)
 
 ## Installation
 
