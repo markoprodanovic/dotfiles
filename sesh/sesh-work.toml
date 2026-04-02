@@ -35,3 +35,8 @@ startup_command = "bash ~/.config/sesh/scripts/magento-main.sh"
 name = "nvim config"
 path = "~/.config/nvim"
 startup_command = "nvim ."
+
+[[session]]
+name = "kiro config"
+path = "~/.kiro/settings"
+startup_command = "nvim ."
