@@ -5,3 +5,6 @@ adjust-cell-height = 6
 
 # Shift+Enter in tmux (e.g. Claude Code new line)
 keybind = shift+enter=text:\x1b\r
+
+# Cmd+/ comment toggle (forwarded to Neovim as <C-_>)
+keybind = cmd+/=text:\x1f

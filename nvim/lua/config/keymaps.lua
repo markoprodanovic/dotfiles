@@ -4,6 +4,10 @@
 
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" })
 
+-- Cmd+/ comment toggle (mirrors VS Code behavior; Ghostty forwards cmd+/ as <C-_>)
+vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle comment" })
+vim.keymap.set("v", "<C-_>", "gc", { remap = true, desc = "Toggle comment" })
+
 vim.keymap.set("n", "<leader>gv", function()
   if next(require("diffview.lib").views) == nil then
     vim.cmd("DiffviewOpen")
