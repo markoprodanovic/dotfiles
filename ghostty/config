@@ -1,7 +1,7 @@
 theme = Blazer
 font-family = MesloLGS Nerd Font
 font-size = 16
-adjust-cell-height = 6
+adjust-cell-height = 8
 
 # Shift+Enter in tmux (e.g. Claude Code new line)
 keybind = shift+enter=text:\x1b\r
