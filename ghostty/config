@@ -1,4 +1,5 @@
-theme = Blazer
+# theme = Blazer
+theme = TokyoNight Night
 font-family = MesloLGS Nerd Font
 font-size = 16
 adjust-cell-height = 8

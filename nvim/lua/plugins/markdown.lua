@@ -8,12 +8,12 @@ return {
     },
   },
 
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    opts = {
-      heading = {
-        backgrounds = { "NONE", "NONE", "NONE", "NONE", "NONE", "NONE" },
-      },
-    },
-  },
+  -- {
+  --   "MeanderingProgrammer/render-markdown.nvim",
+  --   opts = {
+  --     heading = {
+  --       backgrounds = { "NONE", "NONE", "NONE", "NONE", "NONE", "NONE" },
+  --     },
+  --   },
+  -- },
 }
