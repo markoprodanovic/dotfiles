@@ -14,12 +14,12 @@ path = "~"
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
-startup_command = "nvim ."
+startup_command = "nvim"
 
 [[session]]
 name = "nvim config"
 path = "~/.config/nvim"
-startup_command = "nvim ."
+startup_command = "nvim"
 
 [[session]]
 name = "vek-moderne-arhitekture"
