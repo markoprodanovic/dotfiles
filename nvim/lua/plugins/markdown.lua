@@ -16,4 +16,16 @@ return {
   --     },
   --   },
   -- },
+
+  {
+    "wallpants/github-preview.nvim",
+    cmd = { "GithubPreviewToggle" },
+    build = "bun install",
+    opts = {
+      cursor_line = { disable = true },
+    },
+    keys = {
+      { "<leader>mp", "<cmd>GithubPreviewToggle<cr>", desc = "Toggle Markdown Preview" },
+    },
+  },
 }

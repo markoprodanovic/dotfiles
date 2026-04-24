@@ -8,6 +8,7 @@ vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" }
 vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle comment" })
 vim.keymap.set("v", "<C-_>", "gc", { remap = true, desc = "Toggle comment" })
 
+-- Copy the current file's path (relative to project root) to clipboard
 vim.keymap.set("n", "<leader>yp", function()
   local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
   vim.fn.setreg("+", path)
