@@ -1,0 +1,4 @@
+customCommands:
+  - key: "e"
+    command: 'nvim --server "$NVIM" --remote-send "<C-\><C-n>:silent LazygitEdit {{.SelectedFile.Name}}<CR>"'
+    context: files

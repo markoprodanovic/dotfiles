@@ -64,6 +64,10 @@ fi
 rm -rf ~/.config/sesh/scripts
 ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 
+# Lazygit config
+mkdir -p "$HOME/Library/Application Support/lazygit"
+ln -sf "$DOTFILES_DIR/lazygit/config.yml" "$HOME/Library/Application Support/lazygit/config.yml"
+
 # Install tmux plugins
 echo "Installing tmux plugins..."
 ~/.tmux/plugins/tpm/bin/install_plugins
