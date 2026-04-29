@@ -24,4 +24,25 @@ return {
       end,
     },
   },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+    opts = {
+      colors = {
+        theme = {
+          all = {
+            ui = {
+              bg_gutter = "none",
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "kanagawa-wave",
+    },
+  },
 }
