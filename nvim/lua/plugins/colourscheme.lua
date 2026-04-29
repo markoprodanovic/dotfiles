@@ -11,16 +11,16 @@ return {
         hl.DiffviewFilePanelInsertions = { fg = c.git.add }
         hl.DiffviewFilePanelDeletions = { fg = c.git.delete }
         -- Status letters (M, A, D, etc.): text colour only, no background
-        hl.DiffviewStatusAdded       = { fg = c.git.add }
-        hl.DiffviewStatusUntracked   = { fg = c.git.add }
-        hl.DiffviewStatusModified    = { fg = c.git.change }
-        hl.DiffviewStatusRenamed     = { fg = c.git.change }
-        hl.DiffviewStatusCopied      = { fg = c.git.change }
-        hl.DiffviewStatusTypeChange  = { fg = c.git.change }
-        hl.DiffviewStatusUnmerged    = { fg = c.git.change }
-        hl.DiffviewStatusDeleted     = { fg = c.git.delete }
-        hl.DiffviewStatusUnknown     = { fg = c.git.delete }
-        hl.DiffviewStatusBroken      = { fg = c.git.delete }
+        hl.DiffviewStatusAdded = { fg = c.git.add }
+        hl.DiffviewStatusUntracked = { fg = c.git.add }
+        hl.DiffviewStatusModified = { fg = c.git.change }
+        hl.DiffviewStatusRenamed = { fg = c.git.change }
+        hl.DiffviewStatusCopied = { fg = c.git.change }
+        hl.DiffviewStatusTypeChange = { fg = c.git.change }
+        hl.DiffviewStatusUnmerged = { fg = c.git.change }
+        hl.DiffviewStatusDeleted = { fg = c.git.delete }
+        hl.DiffviewStatusUnknown = { fg = c.git.delete }
+        hl.DiffviewStatusBroken = { fg = c.git.delete }
       end,
     },
   },
@@ -37,6 +37,18 @@ return {
           },
         },
       },
+      overrides = function(colors)
+        local p = colors.palette
+        return {
+          SnacksDashboardHeader = { fg = p.fujiWhite },
+          SnacksDashboardIcon = { fg = p.carpYellow },
+          SnacksDashboardKey = { fg = p.crystalBlue },
+          SnacksDashboardDesc = { fg = p.fujiWhite },
+          SnacksDashboardFooter = { fg = p.fujiGray },
+          SnacksDashboardTitle = { fg = p.carpYellow },
+          SnacksDashboardSpecial = { fg = p.sakuraPink },
+        }
+      end,
     },
   },
   {
