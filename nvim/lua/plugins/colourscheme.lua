@@ -46,7 +46,7 @@ return {
           SnacksDashboardDesc = { fg = p.fujiWhite },
           SnacksDashboardFooter = { fg = p.fujiGray },
           SnacksDashboardTitle = { fg = p.carpYellow },
-          SnacksDashboardSpecial = { fg = p.sakuraPink },
+          SnacksDashboardSpecial = { fg = p.fujiWhite },
         }
       end,
     },
