@@ -47,6 +47,8 @@ return {
           SnacksDashboardFooter = { fg = p.fujiGray },
           SnacksDashboardTitle = { fg = p.carpYellow },
           SnacksDashboardSpecial = { fg = p.fujiWhite },
+          StatusLine = { bg = "NONE", fg = p.fujiWhite },
+          StatusLineNC = { bg = "NONE", fg = p.fujiGray },
         }
       end,
     },
