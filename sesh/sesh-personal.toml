@@ -12,6 +12,10 @@ name = "home"
 path = "~"
 
 [[session]]
+name = "tinkering"
+path = "~"
+
+[[session]]
 name = "dotfiles"
 path = "~/dotfiles"
 startup_command = "nvim"
