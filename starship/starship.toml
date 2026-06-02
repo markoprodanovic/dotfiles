@@ -1,6 +1,11 @@
 add_newline = true
 command_timeout = 200
-format = "[$directory$git_branch$git_status]($style)\n$character"
+format = "[$directory$git_branch$git_status$cmd_duration]($style)\n$character"
+
+[cmd_duration]
+min_time = 500
+format = "[$duration]($style) "
+style = "italic #7a9ab8"
 
 [character]
 error_symbol = "[✗](bold #7a9ab8)"
