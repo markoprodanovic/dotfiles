@@ -3,7 +3,9 @@ return {
     "mfussenegger/nvim-lint",
     opts = {
       linters_by_ft = {
-        markdown = {},
+        -- vim.NIL, not {}: lazy.nvim merges an empty table into the default
+        -- list (keeping markdownlint-cli2 active); vim.NIL clears the key
+        markdown = vim.NIL,
       },
     },
   },
@@ -16,6 +18,9 @@ return {
   --     },
   --   },
   -- },
+
+  -- Peek replaces markdown-preview.nvim, which the lang.markdown extra pulls in
+  { "iamcco/markdown-preview.nvim", enabled = false },
 
   {
     "toppair/peek.nvim",

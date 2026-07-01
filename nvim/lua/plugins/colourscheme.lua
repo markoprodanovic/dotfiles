@@ -4,24 +4,6 @@ return {
     lazy = true,
     opts = {
       style = "night",
-      on_highlights = function(hl, c)
-        -- Diagonal fill: editor bg with blue-grey stripes
-        hl.DiffviewDiffDelete = { bg = c.bg, fg = c.dark3 }
-        -- File panel counts: text colour only, no background
-        hl.DiffviewFilePanelInsertions = { fg = c.git.add }
-        hl.DiffviewFilePanelDeletions = { fg = c.git.delete }
-        -- Status letters (M, A, D, etc.): text colour only, no background
-        hl.DiffviewStatusAdded = { fg = c.git.add }
-        hl.DiffviewStatusUntracked = { fg = c.git.add }
-        hl.DiffviewStatusModified = { fg = c.git.change }
-        hl.DiffviewStatusRenamed = { fg = c.git.change }
-        hl.DiffviewStatusCopied = { fg = c.git.change }
-        hl.DiffviewStatusTypeChange = { fg = c.git.change }
-        hl.DiffviewStatusUnmerged = { fg = c.git.change }
-        hl.DiffviewStatusDeleted = { fg = c.git.delete }
-        hl.DiffviewStatusUnknown = { fg = c.git.delete }
-        hl.DiffviewStatusBroken = { fg = c.git.delete }
-      end,
     },
   },
   {
@@ -39,7 +21,24 @@ return {
       },
       overrides = function(colors)
         local p = colors.palette
+        local t = colors.theme
         return {
+          -- Diffview: diagonal fill as editor bg with grey stripes
+          DiffviewDiffDelete = { bg = t.ui.bg, fg = t.ui.nontext },
+          -- File panel counts: text colour only, no background
+          DiffviewFilePanelInsertions = { fg = t.vcs.added },
+          DiffviewFilePanelDeletions = { fg = t.vcs.removed },
+          -- Status letters (M, A, D, etc.): text colour only, no background
+          DiffviewStatusAdded = { fg = t.vcs.added },
+          DiffviewStatusUntracked = { fg = t.vcs.added },
+          DiffviewStatusModified = { fg = t.vcs.changed },
+          DiffviewStatusRenamed = { fg = t.vcs.changed },
+          DiffviewStatusCopied = { fg = t.vcs.changed },
+          DiffviewStatusTypeChange = { fg = t.vcs.changed },
+          DiffviewStatusUnmerged = { fg = t.vcs.changed },
+          DiffviewStatusDeleted = { fg = t.vcs.removed },
+          DiffviewStatusUnknown = { fg = t.vcs.removed },
+          DiffviewStatusBroken = { fg = t.vcs.removed },
           SnacksDashboardHeader = { fg = p.fujiWhite },
           SnacksDashboardIcon = { fg = p.carpYellow },
           SnacksDashboardKey = { fg = p.crystalBlue },

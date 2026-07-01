@@ -5,7 +5,7 @@ return {
       local art = require("ascii_art")
       opts.dashboard = opts.dashboard or {}
       opts.dashboard.preset = opts.dashboard.preset or {}
-      opts.dashboard.preset.header = art.mountains2
+      opts.dashboard.preset.header = art.skull
       opts.dashboard.sections = {
         { section = "header" },
         { text = { { "Welcome Marko", hl = "SnacksDashboardDesc", align = "center" } } },
