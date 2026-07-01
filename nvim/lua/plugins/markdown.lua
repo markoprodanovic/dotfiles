@@ -10,15 +10,6 @@ return {
     },
   },
 
-  -- {
-  --   "MeanderingProgrammer/render-markdown.nvim",
-  --   opts = {
-  --     heading = {
-  --       backgrounds = { "NONE", "NONE", "NONE", "NONE", "NONE", "NONE" },
-  --     },
-  --   },
-  -- },
-
   -- Peek replaces markdown-preview.nvim, which the lang.markdown extra pulls in
   { "iamcco/markdown-preview.nvim", enabled = false },
 
