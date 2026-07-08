@@ -5,6 +5,10 @@ return {
     opts = {
       default_file_explorer = false,
       keymaps = {
+        -- Match the pickers: <C-e> reveals hidden files (oil has no separate
+        -- "ignored" concept). Replaces oil's default g. toggle.
+        ["<c-e>"] = "actions.toggle_hidden",
+        ["g."] = false,
         ["<leader>ff"] = {
           callback = function()
             local dir = require("oil").get_current_dir()
