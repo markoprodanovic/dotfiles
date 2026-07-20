@@ -2,10 +2,27 @@
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Symlink $1 -> $2, preserving anything real that is already there.
+# Re-running against an existing correct symlink is a no-op.
+link_config() {
+    local src="$1" dest="$2"
+    if [ -L "$dest" ]; then
+        ln -sfn "$src" "$dest"
+    elif [ -e "$dest" ]; then
+        local backup="${dest}.backup.$(date +%Y%m%d%H%M%S)"
+        echo "Existing file at $dest — backing up to $backup"
+        mv "$dest" "$backup"
+        ln -s "$src" "$dest"
+    else
+        ln -s "$src" "$dest"
+    fi
+}
+
 # Create necessary directories
 mkdir -p ~/Library/Application\ Support/com.mitchellh.ghostty
 mkdir -p ~/.config
 mkdir -p ~/.config/sesh
+mkdir -p ~/.config/herdr
 mkdir -p ~/.tmux/plugins
 
 # Install starship if not already installed
@@ -22,6 +39,14 @@ if ! command -v sesh &>/dev/null; then
     brew install sesh
 else
     echo "sesh already installed"
+fi
+
+# Install herdr if not already installed
+if ! command -v herdr &>/dev/null; then
+    echo "Installing herdr..."
+    brew install herdr
+else
+    echo "herdr already installed"
 fi
 
 # Install TPM if it's not already installed
@@ -63,6 +88,15 @@ else
 fi
 rm -rf ~/.config/sesh/scripts
 ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
+
+# herdr — link only config.toml; the rest of ~/.config/herdr is runtime
+# state (sockets, logs, session.json) that must stay machine-local.
+link_config "$DOTFILES_DIR/herdr/config.toml" ~/.config/herdr/config.toml
+
+# Pick up the config if a herdr server is already running
+if command -v herdr &>/dev/null; then
+    herdr server reload-config &>/dev/null || true
+fi
 
 # Lazygit config
 mkdir -p "$HOME/Library/Application Support/lazygit"
