@@ -23,6 +23,7 @@ mkdir -p ~/Library/Application\ Support/com.mitchellh.ghostty
 mkdir -p ~/.config
 mkdir -p ~/.config/sesh
 mkdir -p ~/.config/herdr
+mkdir -p ~/.config/hunk
 mkdir -p ~/.tmux/plugins
 
 # Install starship if not already installed
@@ -92,6 +93,9 @@ ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 # herdr — link only config.toml; the rest of ~/.config/herdr is runtime
 # state (sockets, logs, session.json) that must stay machine-local.
 link_config "$DOTFILES_DIR/herdr/config.toml" ~/.config/herdr/config.toml
+
+# hunk
+link_config "$DOTFILES_DIR/hunk/config.toml" ~/.config/hunk/config.toml
 
 # Pick up the config if a herdr server is already running
 if command -v herdr &>/dev/null; then

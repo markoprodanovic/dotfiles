@@ -1,0 +1,8 @@
+theme = "custom"
+menu_bar = false
+
+[custom_theme]
+base = "kanagawa-wave"
+label = "kanagawa-wave-custom"
+panel = "#1f1f28"
+panelAlt = "#333340"
