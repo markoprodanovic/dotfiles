@@ -12,9 +12,13 @@ name = "home"
 path = "~"
 
 [[session]]
+name = "tinkering"
+path = "~"
+
+[[session]]
 name = "dotfiles"
 path = "~/dotfiles"
-startup_command = "nvim ."
+startup_command = "nvim"
 
 [[session]]
 name = "magento-cloud"
@@ -28,15 +32,20 @@ startup_command = "magento-nodes"
 
 [[session]]
 name = "magento-main"
-path = "/Users/marko.prodanovic/Sites/ax-magento"
-startup_command = "bash ~/.config/sesh/scripts/magento-main.sh"
+path = "/Users/marko.prodanovic/Sites/arcteryx/ax-magento"
+startup_command = "nvim"
+
+[[session]]
+name = "arcteryx (monorepo)"
+path = "/Users/marko.prodanovic/Sites/arcteryx"
+startup_command = "nvim"
 
 [[session]]
 name = "nvim config"
 path = "~/.config/nvim"
-startup_command = "nvim ."
+startup_command = "nvim"
 
 [[session]]
 name = "kiro config"
 path = "~/.kiro/settings"
-startup_command = "nvim ."
+startup_command = "nvim"
