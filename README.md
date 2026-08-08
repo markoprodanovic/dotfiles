@@ -18,6 +18,7 @@ Personal config files for:
 ## Installation
 
 Clone the repo and run the install script:
+
 ```bash
 ./install.sh
 ```
@@ -27,6 +28,7 @@ You'll be prompted to identify if this is a work or personal machine. This deter
 ## Machine-Specific Sessions
 
 Sesh sessions are configured per machine type:
+
 - `sesh-work.toml` - Work laptop sessions (magento-main, magento-cloud, etc.)
 - `sesh-personal.toml` - Personal laptop sessions (vek-moderne-arhitekture, etc.)
 
