@@ -28,3 +28,6 @@ split_vertical = "prefix+|"
 
 [ui]
 agent_panel_sort = "spaces"
+
+# Skip onboarding
+onboarding = false
