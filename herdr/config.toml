@@ -1,6 +1,9 @@
 # herdr configuration
 # Ported from ~/dotfiles/tmux/tmux.conf
 
+# Skip the first-run notification setup on startup.
+onboarding = false
+
 [theme]
 name = "kanagawa"
 
@@ -28,6 +31,3 @@ split_vertical = "prefix+|"
 
 [ui]
 agent_panel_sort = "spaces"
-
-# Skip onboarding
-onboarding = false
