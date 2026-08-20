@@ -16,6 +16,9 @@ prefix = "ctrl+a"
 # herdr calls this "vertical"; its default was prefix+v.
 split_vertical = "prefix+|"
 
+# Freed prefix+s for the Sesh picker.
+settings = "prefix+,"
+
 # Left at herdr defaults, already matching tmux:
 #   focus_pane_left/down/up/right = prefix+h/j/k/l
 #   split_horizontal              = prefix+minus
@@ -26,8 +29,28 @@ split_vertical = "prefix+|"
 # Intentional divergences from tmux:
 #   prefix+r       = resize_mode (modal), replaces tmux's repeatable prefix+H/J/K/L
 #   prefix+shift+r = reload_config (tmux used prefix+r)
-#   prefix+w       = workspace_picker, replaces the sesh fzf popup on prefix+s
 #   prefix+q       = detach (tmux used prefix+d)
+#
+# Session switching, closest to the old tmux+sesh setup:
+#   prefix+s       = Sesh picker (workspaces + sessions + zoxide), see below
+#   prefix+w       = herdr's built-in workspace_picker
+#   prefix+g       = herdr's built-in goto navigator
 
 [ui]
 agent_panel_sort = "spaces"
+
+# --- Sesh plugin (fullerzz.sesh) ---
+# Installed with: herdr plugin install fullerzz/herdr-plugin-sesh
+# prefix+s (was keys.settings, moved to prefix+, above). The plugin's suggested
+# prefix+shift+t would have collided with rename_tab.
+[[keys.command]]
+key = "prefix+s"
+type = "plugin_action"
+command = "fullerzz.sesh.open-picker"
+description = "open Sesh picker"
+
+[[keys.command]]
+key = "prefix+shift+b"
+type = "plugin_action"
+command = "fullerzz.sesh.last"
+description = "switch to previous Sesh workspace"

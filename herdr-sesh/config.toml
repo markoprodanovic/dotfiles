@@ -1,0 +1,14 @@
+version = 1
+
+[workspace_defaults]
+# One entry per line with icons, directories first, hidden files included.
+# --icons=always / --color=always are required: the picker captures this
+# output rather than writing to a TTY, so the "auto" defaults would strip both.
+preview = "eza -1 --all --icons=always --group-directories-first --color=always {}"
+
+[picker]
+# The plugin has no "current workspace" marker (it never decodes herdr's
+# `focused` flag), so "recent" is the closest cue - most recently visited
+# first, which floats the workspace you're in toward the top.
+# ctrl+r toggles between "workspace" and "recent" while the picker is open.
+workspace_sort = "recent"

@@ -23,6 +23,7 @@ mkdir -p ~/Library/Application\ Support/com.mitchellh.ghostty
 mkdir -p ~/.config
 mkdir -p ~/.config/sesh
 mkdir -p ~/.config/herdr
+mkdir -p ~/.config/herdr-sesh
 mkdir -p ~/.config/hunk
 mkdir -p ~/.tmux/plugins
 
@@ -49,6 +50,16 @@ if ! command -v herdr &>/dev/null; then
 else
     echo "herdr already installed"
 fi
+
+# fzf/jq/git-lfs are needed by the herdr sesh plugin
+for dep in fzf jq git-lfs; do
+    if ! command -v "$dep" &>/dev/null; then
+        echo "Installing $dep..."
+        brew install "$dep"
+    else
+        echo "$dep already installed"
+    fi
+done
 
 # Install TPM if it's not already installed
 TPM_PATH=~/.tmux/plugins/tpm
@@ -94,8 +105,23 @@ ln -sf "$DOTFILES_DIR/sesh/scripts" ~/.config/sesh/scripts
 # state (sockets, logs, session.json) that must stay machine-local.
 link_config "$DOTFILES_DIR/herdr/config.toml" ~/.config/herdr/config.toml
 
+# herdr-sesh plugin config (preview style, picker options)
+link_config "$DOTFILES_DIR/herdr-sesh/config.toml" ~/.config/herdr-sesh/config.toml
+
 # hunk
 link_config "$DOTFILES_DIR/hunk/config.toml" ~/.config/hunk/config.toml
+
+# Sesh plugin (third-party, installed from GitHub). Only installs when absent,
+# so an existing/pinned version is never replaced.
+if command -v herdr &>/dev/null; then
+    if herdr plugin list 2>/dev/null | grep -q 'fullerzz.sesh'; then
+        echo "sesh plugin already installed"
+    else
+        echo "Installing sesh plugin..."
+        herdr plugin install fullerzz/herdr-plugin-sesh --yes || \
+            echo "sesh plugin install failed - run it manually to see why"
+    fi
+fi
 
 # Pick up the config if a herdr server is already running
 if command -v herdr &>/dev/null; then
