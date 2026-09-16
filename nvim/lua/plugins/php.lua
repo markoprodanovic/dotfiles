@@ -53,6 +53,16 @@ return {
     },
   },
 
+  -- Disable all formatting on save for PHP
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        php = vim.NIL,
+      },
+    },
+  },
+
   -- Configure phpcs and phpmd to use the team's rulesets
   {
     "mfussenegger/nvim-lint",
