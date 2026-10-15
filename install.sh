@@ -25,6 +25,7 @@ mkdir -p ~/.config/sesh
 mkdir -p ~/.config/herdr
 mkdir -p ~/.config/herdr-sesh
 mkdir -p ~/.config/hunk
+mkdir -p ~/.config/rex
 mkdir -p ~/.tmux/plugins
 
 # Install starship if not already installed
@@ -110,6 +111,9 @@ link_config "$DOTFILES_DIR/herdr-sesh/config.toml" ~/.config/herdr-sesh/config.t
 
 # hunk
 link_config "$DOTFILES_DIR/hunk/config.toml" ~/.config/hunk/config.toml
+
+# Rex - link only init.lua, same reasoning as herdr
+link_config "$DOTFILES_DIR/rex/init.lua" ~/.config/rex/init.lua
 
 # Sesh plugin (third-party, installed from GitHub). Only installs when absent,
 # so an existing/pinned version is never replaced.
