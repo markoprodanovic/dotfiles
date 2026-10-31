@@ -1,1 +1,0 @@
-require("merino").load("light")

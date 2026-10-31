@@ -1,43 +1,35 @@
--- Active theme. Change to "kanagawa" and restart Neovim to switch back.
--- To preview without restarting: :colorscheme kanagawa-wave / :colorscheme merino-dark
-local theme = "merino"
-
-local colorschemes = {
-  merino = "merino-dark", -- matches Rex's Merino Dark
-  kanagawa = "kanagawa-wave",
-}
+-- Active theme: the one line to change. Restart Neovim to apply.
+--   Rex themes: "rex-abyssal-trench", "rex-merino-dark", "rex-merino-light".
+--               Preview live with :colorscheme rex-<Tab>.
+--   Others:     "kanagawa-wave", "tokyonight-night".
+-- To add another Rex theme, see nvim/vendor/rex-themes.nvim/README.md
+local colorscheme = "rex-abyssal-trench"
+-- local colorscheme = "junipter-smoke"
 
 return {
   {
-    -- Vendored local copy (no upstream repo), see nvim/vendor/merino.nvim/README.md
-    dir = vim.fn.stdpath("config") .. "/vendor/merino.nvim",
-    name = "merino.nvim",
+    -- Vendored local plugin (no upstream repo)
+    dir = vim.fn.stdpath("config") .. "/vendor/rex-themes.nvim",
+    name = "rex-themes.nvim",
     lazy = true,
     init = function()
-      -- merino.nvim has no override option, so reapply ours whenever it loads
+      -- rex-themes has no override option, so reapply ours whenever one loads
       vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "merino*",
+        pattern = "rex-*",
         callback = function()
-          local c = require("merino.colors").get(vim.o.background)
-          -- Mix fg into bg by `amount` (0-1), same approach as merino.colors
-          local function blend(fg, bg, amount)
-            local out = {}
-            for i = 2, 6, 2 do
-              local a, b = tonumber(fg:sub(i, i + 1), 16), tonumber(bg:sub(i, i + 1), 16)
-              out[#out + 1] = math.floor(a * amount + b * (1 - amount) + 0.5)
-            end
-            return string.format("#%02x%02x%02x", unpack(out))
-          end
-          -- Merino reuses the terminal's inverted selection (solid white, fg forced dark),
-          -- which wipes out syntax colours. Use a translucent blue tint and keep fg.
-          local selection = blend(c.blue, c.bg, 0.3)
+          local colors = require("rex_themes.colors")
+          local c = colors.get(require("rex_themes").current())
+          -- Some Rex themes (e.g. Merino) use an inverted terminal selection (solid white,
+          -- fg forced dark), which wipes out syntax colours. Use a translucent blue tint
+          -- and keep fg, consistently across themes.
+          local selection = colors.blend(c.blue, c.bg, 0.3)
           local overrides = {
             Visual = { bg = selection },
             PmenuSel = { bg = selection },
             PmenuMatchSel = { fg = c.blue, bg = selection, bold = true },
             WildMenu = { bg = selection },
             -- Floats/popups (Snacks explorer + pickers, lazygit, completion, hover) sit on
-            -- the editor bg instead of Merino's grey `surface`; borders separate them,
+            -- the editor bg instead of the grey `surface`; borders separate them,
             -- like Rex panes. Relies on vim.o.winborder (options.lua) for borderless popups.
             NormalFloat = { fg = c.fg, bg = c.bg },
             FloatBorder = { fg = c.border, bg = c.bg },
@@ -68,8 +60,8 @@ return {
             SnacksDashboardFooter = { fg = c.muted },
             SnacksDashboardTitle = { fg = c.yellow },
             SnacksDashboardSpecial = { fg = c.fg },
-            -- Snacks picker/explorer selection defaults to Visual, which Merino inverts to
-            -- solid white. Use Merino's own picker selection style (TelescopeSelection).
+            -- Snacks picker/explorer selection defaults to Visual; match the engine's own
+            -- picker selection style (TelescopeSelection) instead.
             SnacksPickerListCursorLine = { bg = c.elevated, bold = true },
             SnacksPickerPreviewCursorLine = { bg = c.elevated },
             StatusLine = { bg = "NONE", fg = c.fg },
@@ -138,7 +130,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = colorschemes[theme],
+      colorscheme = colorscheme,
     },
   },
 }

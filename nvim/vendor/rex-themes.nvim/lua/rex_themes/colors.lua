@@ -11,9 +11,12 @@ local function blend(fg, bg, amount)
   return string.format("#%02x%02x%02x", unpack(channels))
 end
 
-function M.get(variant)
-  local p = require("merino.palettes")[variant]
-  assert(p, "Unknown Merino variant: " .. tostring(variant))
+M.blend = blend
+
+-- Semantic colours for a theme id (a key in palettes.lua, e.g. "abyssal-trench").
+function M.get(id)
+  local p = require("rex_themes.palettes")[id]
+  assert(p, "Unknown Rex theme: " .. tostring(id))
   return {
     bg = p.background,
     fg = p.foreground,
