@@ -1,8 +1,7 @@
-theme = "custom"
+# Follow the terminal's palette: Hunk asks Rex for its colours at startup, so it
+# always matches the active Rex theme (currently Abyssal Trench), light or dark.
+theme = "terminal"
 menu_bar = false
-
-[custom_theme]
-base = "kanagawa-wave"
-label = "kanagawa-wave-custom"
-panel = "#1f1f28"
-panelAlt = "#333340"
+# Let the terminal background show through Hunk's panels (sidebar, headers,
+# filler rows) so it blends in like Neovim instead of drawing its own shades.
+transparent_background = true
