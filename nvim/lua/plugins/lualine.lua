@@ -1,3 +1,24 @@
+local function hl_fg(name)
+  local fg = vim.api.nvim_get_hl(0, { name = name, link = false }).fg
+  return fg and string.format("#%06x", fg)
+end
+
+-- Bright ANSI accents (10 green, 11 yellow, 9 red) plus 5 purple and 8 muted,
+-- falling back to highlight groups for colorschemes that skip terminal colours.
+local function statusline_colors()
+  local t = function(i)
+    return vim.g["terminal_color_" .. i]
+  end
+  return {
+    fg = hl_fg("Normal"),
+    muted = t(8) or hl_fg("Comment"),
+    green = t(10) or hl_fg("String"),
+    purple = t(5) or hl_fg("Statement"),
+    red = t(9) or hl_fg("DiagnosticError"),
+    yellow = t(11) or hl_fg("DiagnosticWarn"),
+  }
+end
+
 return {
   "nvim-lualine/lualine.nvim",
   opts = function(_, opts)
@@ -5,22 +26,28 @@ return {
 
     opts.options.section_separators = { left = "", right = "" }
     opts.options.component_separators = { left = "", right = "" }
-    opts.options.theme = {
-      normal = {
-        a = { bg = "NONE", fg = "#DCD7BA", gui = "bold" },
-        b = { bg = "NONE", fg = "#DCD7BA" },
-        c = { bg = "NONE", fg = "#727169" },
-      },
-      insert = { a = { bg = "NONE", fg = "#98BB6C", gui = "bold" } },
-      visual = { a = { bg = "NONE", fg = "#957FB8", gui = "bold" } },
-      replace = { a = { bg = "NONE", fg = "#FF5D62", gui = "bold" } },
-      command = { a = { bg = "NONE", fg = "#E6C384", gui = "bold" } },
-      inactive = {
-        a = { bg = "NONE", fg = "#727169" },
-        b = { bg = "NONE", fg = "#727169" },
-        c = { bg = "NONE", fg = "#727169" },
-      },
-    }
+    -- Transparent statusline coloured from the active theme, so it follows any
+    -- colorscheme. Accents come from the 16 terminal colours, which Rex themes and
+    -- Kanagawa both set; lualine re-evaluates this on every :colorscheme.
+    opts.options.theme = function()
+      local c = statusline_colors()
+      return {
+        normal = {
+          a = { bg = "NONE", fg = c.fg, gui = "bold" },
+          b = { bg = "NONE", fg = c.fg },
+          c = { bg = "NONE", fg = c.muted },
+        },
+        insert = { a = { bg = "NONE", fg = c.green, gui = "bold" } },
+        visual = { a = { bg = "NONE", fg = c.purple, gui = "bold" } },
+        replace = { a = { bg = "NONE", fg = c.red, gui = "bold" } },
+        command = { a = { bg = "NONE", fg = c.yellow, gui = "bold" } },
+        inactive = {
+          a = { bg = "NONE", fg = c.muted },
+          b = { bg = "NONE", fg = c.muted },
+          c = { bg = "NONE", fg = c.muted },
+        },
+      }
+    end
 
     opts.sections = {
       lualine_a = { "mode" },
@@ -57,7 +84,15 @@ return {
         },
       },
       lualine_y = {},
-      lualine_z = { { "location", color = { fg = "#727169" }, padding = { left = 1, right = 0 } } },
+      lualine_z = {
+        {
+          "location",
+          color = function()
+            return { fg = statusline_colors().muted }
+          end,
+          padding = { left = 1, right = 0 },
+        },
+      },
     }
 
     opts.inactive_sections = {
