@@ -150,6 +150,10 @@ rex.bind(P .. "g", "lazygit_toggle")
 
 -- App
 rex.bind(P .. "b", "client.sidebar.toggle")
+-- Sidebar on Cmd+Shift+E (VS Code's explorer key). Frees Cmd+/, which Rex then
+-- passes to the terminal; Neovim maps it as <D-/> to toggle comments.
+rex.bind("cmd+shift+e", "client.sidebar.toggle")
+rex.unbind("cmd+/")
 rex.bind(P .. ",", "client.settings")
 rex.bind(P .. "shift+r", "client.config.reload")
 rex.bind(P .. "shift+/", "client.palette.toggle") -- prefix ? (herdr help)

@@ -4,9 +4,13 @@
 
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" })
 
--- Cmd+/ comment toggle (mirrors VS Code behavior; Ghostty forwards cmd+/ as <C-_>)
-vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle comment" })
-vim.keymap.set("v", "<C-_>", "gc", { remap = true, desc = "Toggle comment" })
+-- Cmd+/ comment toggle (mirrors VS Code behavior).
+-- <D-/>: Rex passes Cmd+/ through natively via the kitty keyboard protocol.
+-- <C-_>: Ghostty forwards Cmd+/ as Ctrl+_ (ghostty/config).
+for _, key in ipairs({ "<D-/>", "<C-_>" }) do
+  vim.keymap.set("n", key, "gcc", { remap = true, desc = "Toggle comment" })
+  vim.keymap.set("v", key, "gc", { remap = true, desc = "Toggle comment" })
+end
 
 -- Copy the current file's path (relative to project root) to clipboard
 vim.keymap.set("n", "<leader>yp", function()
