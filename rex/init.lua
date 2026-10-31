@@ -53,6 +53,9 @@ rex.bind(P .. "shift+d", "session.close")
 -- opened in the focused pane's working directory. Toggling off closes it.
 local TERMINAL = "com.superlogical.terminal"
 local LAZYGIT_LABEL = "lazygit-overlay"
+-- overlay layer_id -> block it was opened from (lost on config reload; then the
+-- first tiled pane is used as the split anchor instead).
+local overlay_source = {}
 
 -- Directory of the given terminal block: the one the shell reported (OSC 7),
 -- else the foreground program's cwd, else the shell's, else $HOME.
@@ -131,7 +134,7 @@ rex.action({
 		end
 
 		local source = ctx.block_id or w.focused_block_id
-		local _, nerr = rex.session.new_layer({
+		local layer, nerr = rex.session.new_layer({
 			window_id = w.window_id,
 			bounds = { 0.075, 0.075, 0.85, 0.85 },
 			focus = true,
@@ -144,9 +147,123 @@ rex.action({
 		if nerr then
 			error(nerr, 0)
 		end
+		overlay_source[layer.layer_id] = source
 	end,
 })
 rex.bind(P .. "g", "lazygit_toggle")
+
+-- Find the RPC socket of the nvim whose TUI process is pid. Since nvim 0.10 the
+-- TUI and the server are separate processes, and the socket
+-- ($TMPDIR/nvim.$USER/*/nvim.<pid>.0) is named after the server, a child of the TUI.
+local function nvim_socket(pid)
+	local script = [[
+dir="${TMPDIR:-$(getconf DARWIN_USER_TEMP_DIR)}"
+dir="${dir%/}/nvim.$(id -un)"
+for p in "$1" $(pgrep -P "$1"); do
+	for s in "$dir"/*/nvim."$p".0; do
+		[ -S "$s" ] && { echo "$s"; exit 0; }
+	done
+done
+exit 1]]
+	local r = rex.exec({ "sh", "-c", script, "sh", tostring(pid) }, { timeout = 5 })
+	if r and r.ok then
+		return (r.stdout:gsub("%s+$", ""))
+	end
+end
+
+-- The first terminal in window w (outside the overlay) running nvim, as
+-- block_id, socket, nvim binary. Prefers the tiled layout over floating panes.
+local function find_nvim(w)
+	for _, layer in ipairs(w.layers or {}) do
+		for _, b in ipairs(layer.blocks or {}) do
+			if b.creator_name == TERMINAL and b.label ~= LAZYGIT_LABEL then
+				local proc = rex.block.call(TERMINAL, "process", { block_id = b.block_id })
+				local fg = proc and proc.foreground
+				if fg and (fg.name == "nvim" or fg.argv0 == "nvim") then
+					local sock = nvim_socket(fg.pid)
+					if sock then
+						-- Rex's own PATH lacks Homebrew, so reuse the running binary.
+						return b.block_id, sock, fg.invoked_path or fg.path
+					end
+				end
+			end
+		end
+	end
+end
+
+-- The first block of the window's tiled layer, used as a split anchor when
+-- nothing better is known.
+local function first_tiled_block(w)
+	for _, layer in ipairs(w.layers or {}) do
+		if layer.kind == "tiled" and layer.blocks and layer.blocks[1] then
+			return layer.blocks[1].block_id
+		end
+	end
+end
+
+-- Called by LazyGit's "e" key (lazygit/config.yml). Opens file in the tab's
+-- nvim if there is one, else in a new nvim split, then closes the overlay.
+rex.action({
+	name = "lazygit_edit",
+	title = "Open File from LazyGit Overlay",
+	args = { file = "string", cwd = "string?" },
+	run = function(ctx, args)
+		local file = args.file
+		if file:sub(1, 1) ~= "/" and args.cwd then
+			file = args.cwd .. "/" .. file
+		end
+
+		local view, err = rex.session.view({})
+		if not view then
+			error(err, 0)
+		end
+		local w = window_of(view, ctx.block_id)
+		if not w then
+			error("no window found", 0)
+		end
+		local overlay = lazygit_layer(w)
+
+		local nvim_block, sock, nvim_bin = find_nvim(w)
+		if nvim_block then
+			-- LazygitEdit (nvim/lua/plugins/lazygit.lua) picks a normal window and
+			-- edits the file there. "<" must be escaped for --remote-send.
+			local keys = "<C-\\><C-n>:silent LazygitEdit " .. file:gsub("<", "<lt>") .. "<CR>"
+			local r, xerr = rex.exec({ nvim_bin, "--server", sock, "--remote-send", keys }, { timeout = 5 })
+			if not r then
+				error(xerr, 0)
+			end
+			if not r.ok then
+				error(r.stderr, 0)
+			end
+			rex.session.focus_block({ block_id = nvim_block })
+		else
+			-- Split the pane the overlay was opened from, so nvim lands next to it.
+			local anchor = overlay_source[overlay]
+			if not anchor or not window_of(view, anchor) or window_of(view, anchor).window_id ~= w.window_id then
+				anchor = first_tiled_block(w)
+			end
+			local _, serr = rex.session.new_split({
+				anchor_id = anchor,
+				direction = "horizontal",
+				side = "after",
+				focus = true,
+				layout = rex.layout.block({
+					flavor = TERMINAL .. ".shell",
+					options = { command = { "nvim", file }, cwd = args.cwd },
+				}),
+			})
+			if serr then
+				error(serr, 0)
+			end
+		end
+
+		-- Closing the overlay ends LazyGit (and the `rex do` that called us), so do it last.
+		if overlay then
+			overlay_source[overlay] = nil
+			rex.session.close_layer({ layer_id = overlay })
+		end
+	end,
+})
 
 -- App
 rex.bind(P .. "b", "client.sidebar.toggle")

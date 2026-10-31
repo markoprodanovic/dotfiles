@@ -1,4 +1,13 @@
 customCommands:
+  # "e" opens the selected file in Neovim:
+  # - LazyGit inside nvim (snacks): send it to that nvim via $NVIM
+  # - LazyGit in the Rex overlay: the lazygit_edit action (rex/init.lua) opens it
+  #   in the tab's nvim, or a new nvim split, and closes the overlay
   - key: "e"
-    command: 'nvim --server "$NVIM" --remote-send "<C-\><C-n>:silent LazygitEdit {{.SelectedFile.Name}}<CR>"'
+    command: >-
+      if [ -n "$NVIM" ]; then
+      nvim --server "$NVIM" --remote-send "<C-\><C-n>:silent LazygitEdit {{.SelectedFile.Name}}<CR>";
+      else
+      rex do lazygit_edit file={{.SelectedFile.Name | quote}} cwd="$PWD";
+      fi
     context: files
