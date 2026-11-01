@@ -1,0 +1,16 @@
+# Extra config loaded only by the Rex LazyGit overlay (rex/init.lua sets
+# LG_CONFIG_FILE). q and Esc minimize the overlay instead of quitting, so
+# LazyGit keeps its state. Q still quits for real.
+#
+# Custom commands take precedence over built-in keys.
+customCommands:
+  - key: "q"
+    context: "global"
+    command: "rex do lazygit_toggle"
+    description: "Minimize overlay"
+  # Esc is bound only on the top-level panels, so it still backs out of
+  # nested views (commit files, sub-commits, staging) and popups as usual.
+  - key: "<esc>"
+    context: "status, files, worktrees, submodules, localBranches, remotes, tags, commits, reflogCommits, stash"
+    command: "rex do lazygit_toggle"
+    description: "Minimize overlay"

@@ -2,7 +2,7 @@ customCommands:
   # "e" opens the selected file in Neovim:
   # - LazyGit inside nvim (snacks): send it to that nvim via $NVIM
   # - LazyGit in the Rex overlay: the lazygit_edit action (rex/init.lua) opens it
-  #   in the tab's nvim, or a new nvim split, and closes the overlay
+  #   in the tab's nvim, or a new nvim split, and minimizes the overlay
   - key: "e"
     command: >-
       if [ -n "$NVIM" ]; then

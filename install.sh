@@ -135,6 +135,7 @@ fi
 # Lazygit config
 mkdir -p "$HOME/Library/Application Support/lazygit"
 ln -sf "$DOTFILES_DIR/lazygit/config.yml" "$HOME/Library/Application Support/lazygit/config.yml"
+ln -sf "$DOTFILES_DIR/lazygit/overlay.yml" "$HOME/Library/Application Support/lazygit/overlay.yml"
 
 # Install tmux plugins
 echo "Installing tmux plugins..."

@@ -49,10 +49,16 @@ rex.bind(P .. "shift+n", "session.new")
 rex.bind(P .. "shift+w", "session.rename")
 rex.bind(P .. "shift+d", "session.close")
 
--- LazyGit overlay: toggles a centered floating LazyGit over the current tab,
--- opened in the focused pane's working directory. Toggling off closes it.
+-- LazyGit overlay: a centered floating LazyGit over the current tab, opened in
+-- the focused pane's working directory. Toggling minimizes it rather than
+-- closing it, so LazyGit keeps its state (cursor, panel, filters) between uses.
+-- Inside the overlay, q and Esc also minimize (lazygit/overlay.yml); Q quits.
 local TERMINAL = "com.superlogical.terminal"
 local LAZYGIT_LABEL = "lazygit-overlay"
+-- The overlay loads overlay.yml on top of the normal config. Setting
+-- LG_CONFIG_FILE replaces the default lookup, so both files are listed.
+local LAZYGIT_CONFIG_DIR = os.getenv("HOME") .. "/Library/Application Support/lazygit"
+local LAZYGIT_CONFIG = LAZYGIT_CONFIG_DIR .. "/config.yml," .. LAZYGIT_CONFIG_DIR .. "/overlay.yml"
 -- overlay layer_id -> block it was opened from (lost on config reload; then the
 -- first tiled pane is used as the split anchor instead).
 local overlay_source = {}
@@ -96,13 +102,14 @@ local function window_of(view, block_id)
 	end
 end
 
--- The floating layer in window w that holds the LazyGit overlay, if any.
+-- The floating layer in window w that holds the LazyGit overlay, if any, and
+-- whether it is minimized.
 local function lazygit_layer(w)
 	for _, layer in ipairs(w.layers or {}) do
 		if layer.kind ~= "tiled" then
 			for _, b in ipairs(layer.blocks or {}) do
 				if b.label == LAZYGIT_LABEL then
-					return layer.layer_id
+					return layer.layer_id, layer.state == "minimized"
 				end
 			end
 		end
@@ -112,7 +119,7 @@ end
 rex.action({
 	name = "lazygit_toggle",
 	title = "Toggle LazyGit Overlay",
-	description = "Open LazyGit in a centered floating pane in the focused pane's directory, or close it if open.",
+	description = "Open LazyGit in a centered floating pane in the focused pane's directory, or minimize/restore it if already open.",
 	keywords = "git lazygit float overlay",
 	run = function(ctx)
 		local view, err = rex.session.view({})
@@ -124,11 +131,16 @@ rex.action({
 			error("no window to open LazyGit in", 0)
 		end
 
-		local existing = lazygit_layer(w)
+		local existing, minimized = lazygit_layer(w)
 		if existing then
-			local _, cerr = rex.session.close_layer({ layer_id = existing })
-			if cerr then
-				error(cerr, 0)
+			local _, serr
+			if minimized then
+				_, serr = rex.session.set_layer_state({ layer_id = existing, state = "normal", focus = true })
+			else
+				_, serr = rex.session.set_layer_state({ layer_id = existing, state = "minimized" })
+			end
+			if serr then
+				error(serr, 0)
 			end
 			return
 		end
@@ -141,7 +153,10 @@ rex.action({
 			layout = rex.layout.block({
 				flavor = TERMINAL .. ".shell",
 				label = LAZYGIT_LABEL,
-				options = { command = { "lazygit" }, cwd = block_cwd(source) },
+				options = {
+					command = { "env", "LG_CONFIG_FILE=" .. LAZYGIT_CONFIG, "lazygit" },
+					cwd = block_cwd(source),
+				},
 			}),
 		})
 		if nerr then
@@ -202,7 +217,7 @@ local function first_tiled_block(w)
 end
 
 -- Called by LazyGit's "e" key (lazygit/config.yml). Opens file in the tab's
--- nvim if there is one, else in a new nvim split, then closes the overlay.
+-- nvim if there is one, else in a new nvim split, then minimizes the overlay.
 rex.action({
 	name = "lazygit_edit",
 	title = "Open File from LazyGit Overlay",
@@ -257,10 +272,9 @@ rex.action({
 			end
 		end
 
-		-- Closing the overlay ends LazyGit (and the `rex do` that called us), so do it last.
+		-- Minimize rather than close, so LazyGit is where you left it next time.
 		if overlay then
-			overlay_source[overlay] = nil
-			rex.session.close_layer({ layer_id = overlay })
+			rex.session.set_layer_state({ layer_id = overlay, state = "minimized" })
 		end
 	end,
 })
