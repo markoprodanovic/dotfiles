@@ -4,7 +4,6 @@
 --   Others:     "kanagawa-wave", "tokyonight-night".
 -- To add another Rex theme, see nvim/vendor/rex-themes.nvim/README.md
 local colorscheme = "rex-abyssal-trench"
--- local colorscheme = "junipter-smoke"
 
 return {
   {
