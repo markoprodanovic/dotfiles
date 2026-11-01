@@ -165,7 +165,9 @@ rex.action({
 		overlay_source[layer.layer_id] = source
 	end,
 })
-rex.bind(P .. "g", "lazygit_toggle")
+-- Cmd+G rather than Ctrl+L: Ctrl+L is Neovim's move-right (vim-tmux-navigator)
+-- and the shell's clear-screen, and a Rex binding would take it from every pane.
+rex.bind("cmd+g", "lazygit_toggle")
 
 -- Find the RPC socket of the nvim whose TUI process is pid. Since nvim 0.10 the
 -- TUI and the server are separate processes, and the socket
