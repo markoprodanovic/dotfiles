@@ -62,6 +62,14 @@ for dep in fzf jq git-lfs; do
     fi
 done
 
+# ImageMagick renders SVG icon packs (incl. the default Material) for real-icons.nvim
+if ! command -v magick &>/dev/null; then
+    echo "Installing imagemagick..."
+    brew install imagemagick
+else
+    echo "imagemagick already installed"
+fi
+
 # Install TPM if it's not already installed
 TPM_PATH=~/.tmux/plugins/tpm
 if [ ! -d "$TPM_PATH" ]; then
