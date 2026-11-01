@@ -46,7 +46,7 @@ rex.bind("resize/enter", "client.mode.exit")
 -- Sessions (herdr workspaces)
 rex.bind(P .. "s", "session.switch")
 rex.bind(P .. "shift+n", "session.new")
-rex.bind(P .. "shift+w", "session.rename")
+rex.bind(P .. "shift+s", "session.rename") -- Shift + first letter renames, like Shift+T for tabs
 rex.bind(P .. "shift+d", "session.close")
 
 -- LazyGit overlay: a centered floating LazyGit over the current tab, opened in
