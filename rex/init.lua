@@ -208,6 +208,20 @@ local function find_nvim(w)
 	end
 end
 
+-- The window's tiled layer, if it holds block_id.
+local function tiled_has_block(w, block_id)
+	for _, layer in ipairs(w.layers or {}) do
+		if layer.kind == "tiled" then
+			for _, b in ipairs(layer.blocks or {}) do
+				if b.block_id == block_id then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
 -- The first block of the window's tiled layer, used as a split anchor when
 -- nothing better is known.
 local function first_tiled_block(w)
@@ -255,8 +269,10 @@ rex.action({
 			rex.session.focus_block({ block_id = nvim_block })
 		else
 			-- Split the pane the overlay was opened from, so nvim lands next to it.
+			-- That pane may have been closed since, so check it is still in this
+			-- tab (window_of can't tell: it falls back to the active window).
 			local anchor = overlay_source[overlay]
-			if not anchor or not window_of(view, anchor) or window_of(view, anchor).window_id ~= w.window_id then
+			if not anchor or not tiled_has_block(w, anchor) then
 				anchor = first_tiled_block(w)
 			end
 			local _, serr = rex.session.new_split({
@@ -266,7 +282,12 @@ rex.action({
 				focus = true,
 				layout = rex.layout.block({
 					flavor = TERMINAL .. ".shell",
-					options = { command = { "nvim", file }, cwd = args.cwd },
+					-- Through an interactive zsh so ~/.zshrc sets up PATH (mise's
+					-- node, which Copilot needs); exec so the pane closes with nvim.
+					options = {
+						command = { "/bin/zsh", "-ic", 'exec nvim "$1"', "zsh", file },
+						cwd = args.cwd,
+					},
 				}),
 			})
 			if serr then
