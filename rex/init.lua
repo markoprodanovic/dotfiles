@@ -59,6 +59,20 @@ local LAZYGIT_LABEL = "lazygit-overlay"
 -- LG_CONFIG_FILE replaces the default lookup, so both files are listed.
 local LAZYGIT_CONFIG_DIR = os.getenv("HOME") .. "/Library/Application Support/lazygit"
 local LAZYGIT_CONFIG = LAZYGIT_CONFIG_DIR .. "/config.yml," .. LAZYGIT_CONFIG_DIR .. "/overlay.yml"
+-- Rex execs the overlay command directly on its own PATH, which lacks Homebrew,
+-- so a bare "lazygit" isn't found. Run it through the shell instead so the
+-- user's PATH is loaded before lazygit is resolved. The -i (interactive) flag
+-- is required because this user's Homebrew PATH setup lives in ~/.zshrc, which
+-- a non-interactive shell would skip. Harmless "zle" warnings may print to
+-- stderr; they don't affect lazygit.
+local LAZYGIT_SHELL = os.getenv("SHELL") or "/bin/zsh"
+-- Single-quote a value for POSIX shells: wrap in '...', and turn any embedded
+-- ' into '\''. The config path contains a space ("Application Support").
+local function shq(s)
+	return "'" .. s:gsub("'", "'\\''") .. "'"
+end
+-- Export LG_CONFIG_FILE, then exec lazygit, all inside the login shell.
+local LAZYGIT_CMD = "export LG_CONFIG_FILE=" .. shq(LAZYGIT_CONFIG) .. "; exec lazygit"
 -- overlay layer_id -> block it was opened from (lost on config reload; then the
 -- first tiled pane is used as the split anchor instead).
 local overlay_source = {}
@@ -154,7 +168,9 @@ rex.action({
 				flavor = TERMINAL .. ".shell",
 				label = LAZYGIT_LABEL,
 				options = {
-					command = { "env", "LG_CONFIG_FILE=" .. LAZYGIT_CONFIG, "lazygit" },
+					-- Login shell loads the user PATH, then runs lazygit. See
+					-- LAZYGIT_CMD above.
+					command = { LAZYGIT_SHELL, "-ic", LAZYGIT_CMD },
 					cwd = block_cwd(source),
 				},
 			}),
