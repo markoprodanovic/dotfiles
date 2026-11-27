@@ -32,6 +32,7 @@ rex.bind(P .. "tab", "pane.focus_next")
 rex.bind(P .. "shift+tab", "pane.focus_previous")
 rex.bind(P .. "x", "pane.close")
 rex.bind(P .. "z", "pane.zoom")
+rex.bind(P .. "[", "pane.copy_mode.enter") -- tmux-style copy mode
 
 -- Resize mode (herdr resize_mode): prefix r, then h/j/k/l or arrows; Escape or Enter to leave
 rex.mode("resize", { exclusive = true })
